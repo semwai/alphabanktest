@@ -1,0 +1,59 @@
+@import '../node_modules/arui-feather/vars.css';
+
+
+.App {
+  text-align: center;
+  
+}
+.App-header {
+  background-color: #f3f4f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #172A3F;
+  
+}
+
+.App-link {
+  color: #61dafb;
+}
+ 
+ 
+.Card{
+  width: 15em;
+  height: 10.3em;
+  border-radius: 10px;
+  box-shadow: 10px 10px #00000055;
+  padding: 20px;
+  margin-bottom: 1.3em;
+  margin-top: 1em;
+  background-image: repeating-linear-gradient(150deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2) 1px, transparent 0, transparent 41px),
+	repeating-linear-gradient(-150deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2) 1px, transparent 0, transparent 41px)  !important;
+   background: #B6BCC3;
+}
+
+@media screen and (min-width: 470px) {
+  .Card {
+    height: 9em;
+  }
+}
+
+.custom__input{
+	width:100%;
+}
+.CVV{
+	float: right;
+	width: 3.2em;
+	padding-right: 1em;
+}
+.Picker{
+	width: 2.3em;
+	padding-right: 1em;
+	float: left;
+}
+.Black-field{
+	border: 1.2em solid black;
+}
