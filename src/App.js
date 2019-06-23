@@ -49,7 +49,7 @@ class App extends React.Component  {
 	
 	constructor(props) {
 		super(props);
-		 
+		this.cardNum = ""
 		this.state = {
 			/*состояние выплаты
 			0 - ждем заполнения данных польователя
@@ -58,7 +58,6 @@ class App extends React.Component  {
 			*/
 			progress: 0,
 			message:"",
-			errnotvisible: false,
 			//флаги корректного ввода
 			CVVflag:false,
 			nameValidateFlag:false,
@@ -68,21 +67,13 @@ class App extends React.Component  {
 	}
 	makeQuery(f) {
 		let out = {};
-		out.summ =  f.target[0].value.replace(/ /g,'')
-		out.num = f.target[1].value.replace(/ /g,'')
-		out.mm = f.target[2].value;
-		out.yy = f.target[4].value;
-		out.fio = f.target[8].value;
-		out.cvv = f.target[7].value;
-		if (out.summ <= 0 ||
-			out.cvv.length !== 3 ||
-			out.fio.length === 0 ||
-			out.mm.length === 0 ||
-			out.yy.length === 0 ||
-			out.num.length === 0) {
-			this.setState({errnotvisible:true});
-			
-		}
+		console.log(this.refs)
+		out.summ =  this.refs.cardSumm.state.value.replace(/ /g,'')
+		out.num = this.cardNum.replace(/ /g,'')
+		out.mm = this.refs.cardMM.state.value[0];
+		out.yy = this.refs.cardYY.state.value[0];
+		out.fio = this.refs.cardName.state.value;
+		out.cvv = this.refs.cardCVV.state.value;
 		var object = this;
 		var xhr = new XMLHttpRequest();
 		xhr.open('GET', `http://localhost:3002/${out.summ}/${out.fio}/${out.num}/${out.mm}/${out.yy}/${out.cvv}/`, true);
@@ -123,6 +114,7 @@ class App extends React.Component  {
 	}
 	validateCard(value){
 		this.setState({cardValidateFlag:value.length>=16})
+		this.cardNum = value;
 	}
 	validateName(value){
 		var flag = value.length>0;
@@ -146,25 +138,15 @@ class App extends React.Component  {
 			default:
 				return (
 					<div className="App">
-					<Notification
-						visible={ this.state.errnotvisible }
-						status='error'
-						autoCloseDelay="1"
-						offset={ 100 }
-						stickTo='right'
-						title='Введите все данные!'
-						onCloseTimeout={ () => { this.setState({ errnotvisible: false }); } }
-						onCloserClick={ () => { this.setState({ errnotvisible: false }); } }
-					>
-						Не хватает кое-чего
-					</Notification>
 						<header className="App-header">
 							<Form onSubmit={(f) => { this.makeQuery(f) }}>
 							Сумма:<MoneyInput
 								showCurrency={ true }
-								currencyCode='RUR'
-								bold={ true }
+								currencyCode='RUR' 
+								bold={ true } 
+								ref="cardSumm"
 								size="xl"
+								defaultValue="1,0"
 								onChange={(f)=>{this.validateMoney(f)}}
 								error={!this.state.moneyValidateFlag} 
 							/>
@@ -174,11 +156,12 @@ class App extends React.Component  {
 									onChange={(f)=>{this.validateCard(f)}}
 									error={!this.state.cardValidateFlag}/></p>
 									<p>
-									<Select className="Picker" size="m" mode='radio' options={ MM }/>
-									<Select className="Picker" size="m" mode='radio' options={ YY }/>
+									<Select className="Picker" size="m" mode='radio' options={ MM } ref="cardMM"/>
+									<Select className="Picker" size="m" mode='radio' options={ YY } ref="cardYY"/>
 									</p>
 									<p><Input className="custom__input" placeholder='ФИО' size="m" 
 									error={!this.state.nameValidateFlag} 
+									ref="cardName"
 									onChange={(f)=>{this.validateName(f)}}
 									rightAddons={this.state.nameValidateFlag?"":"Большие латинские буквы"}></Input></p>
 								</div>
@@ -186,6 +169,7 @@ class App extends React.Component  {
 									<br></br>
 									<hr className="Black-field"></hr>
 									<Input className="CVV" label='CVV' 
+									ref="cardCVV"
 									onChange={(f)=>{this.validateCVV(f)}} size="l" mask="111"
 									error={!this.state.CVVflag} ></Input>
 								</div>
