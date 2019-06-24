@@ -110,7 +110,7 @@ class App extends React.Component  {
 		this.setState({CVVflag:value.length==3})
 	}
 	validateMoney(value){
-		this.setState({moneyValidateFlag:value.length>0})
+		this.setState({ moneyValidateFlag:parseInt(value)>0})
 	}
 	validateCard(value){
 		this.setState({cardValidateFlag:value.length>=16})
